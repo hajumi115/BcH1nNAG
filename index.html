@@ -3351,6 +3351,56 @@ svg {
   }
 }
 
+/* Track fix: always translate the inner track, never rely on main movement. */
+html,
+body {
+  overflow: hidden;
+}
+
+main.presentation {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: block;
+  transform: none !important;
+}
+
+.presentation-track {
+  width: max-content;
+  height: 100dvh;
+  min-height: 100dvh;
+  display: flex;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.presentation-track .section {
+  flex: 0 0 100vw;
+  width: 100vw;
+  min-width: 100vw;
+}
+
+@media (max-width: 1024px) {
+  main.presentation {
+    width: 100vw;
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+    display: block;
+  }
+
+  .presentation-track {
+    width: max-content;
+    height: 100dvh;
+    min-height: 100dvh;
+    display: flex;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
   </style>
 </head>
 <body>
@@ -3386,6 +3436,7 @@ svg {
   </nav>
 
   <main class="presentation" id="presentation">
+    <div class="presentation-track" id="presentation-track">
     <section class="section hero-section" id="opening">
       <div class="tech-pattern" aria-hidden="true"></div>
       <div class="section-inner hero-grid">
@@ -3561,6 +3612,7 @@ svg {
         <p>Trung tâm Công nghệ Nagakawa</p>
       </div>
     </section>
+    </div>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -3842,7 +3894,8 @@ function renderRecommendations() {
 }
 
 function initPresentation() {
-  presentationState.slides = [...document.querySelectorAll(".section")];
+  const track = getPresentationTrack();
+  presentationState.slides = [...track.querySelectorAll(".section")];
   presentationState.slideTitles = presentationState.slides.map(getSlideTitle);
   presentationState.slides.forEach((slide, index) => {
     slide.dataset.slide = String(index);
@@ -3863,6 +3916,10 @@ function initPresentation() {
   goToSlide(initialIndex >= 0 ? initialIndex : 0, true);
 
   window.addEventListener("resize", () => goToSlide(presentationState.current, true));
+}
+
+function getPresentationTrack() {
+  return document.getElementById("presentation-track") || document.querySelector("main");
 }
 
 function createSlideIndicator() {
@@ -4043,10 +4100,10 @@ function goToSlide(index, immediate = false) {
   if (!immediate && presentationState.isAnimating) return;
 
   presentationState.current = next;
-  const presentation = document.getElementById("presentation");
+  const track = getPresentationTrack();
   const activeSlide = presentationState.slides[next];
-  presentation.style.transitionDuration = immediate ? "0ms" : "";
-  presentation.style.transform = `translate3d(${-next * 100}vw, 0, 0)`;
+  track.style.transitionDuration = immediate ? "0ms" : "";
+  track.style.transform = `translate3d(${-next * 100}vw, 0, 0)`;
 
   updateSlideState();
   updateProgress();
@@ -4058,7 +4115,7 @@ function goToSlide(index, immediate = false) {
   presentationState.isAnimating = true;
   window.setTimeout(() => {
     presentationState.isAnimating = false;
-    presentation.style.transitionDuration = "";
+    track.style.transitionDuration = "";
   }, immediate ? 0 : 780);
 }
 
