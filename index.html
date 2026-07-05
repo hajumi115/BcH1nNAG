@@ -2603,6 +2603,463 @@ h3 {
   }
 }
 
+/* ==========================================================================
+   Final Device Matrix Override: 320 / 360 / 390 / 430 / 768 / 820 / 912 / 1024
+   ========================================================================== */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+@supports (height: 100dvh) {
+  .presentation {
+    height: 100dvh;
+  }
+
+  .section {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+}
+
+@supports (height: 100svh) {
+  .chapter-nav-panel {
+    max-height: calc(100svh - 126px);
+  }
+}
+
+@media (max-width: 1024px) {
+  html,
+  body {
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .presentation {
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    display: block;
+    transform: none !important;
+    transition: none;
+  }
+
+  .section {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: auto;
+    display: block;
+    padding: 92px clamp(18px, 4vw, 34px) 52px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .section:first-child {
+    padding-top: 112px;
+  }
+
+  .section-inner {
+    width: 100%;
+    max-width: 100%;
+    max-height: none;
+  }
+
+  .presentation-rail {
+    display: none;
+  }
+
+  .site-header {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    min-height: 56px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding: 8px 9px 8px 13px;
+    border-radius: 12px;
+  }
+
+  .brand-mark {
+    font-size: 20px;
+  }
+
+  .report-title {
+    display: block;
+    min-width: 0;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .nav-toggle {
+    min-width: 42px;
+    width: 42px;
+    height: 40px;
+    padding: 0;
+  }
+
+  .nav-toggle-text {
+    display: none;
+  }
+
+  .chapter-nav {
+    justify-content: center;
+    align-items: stretch;
+    padding: 76px 10px 10px;
+    background: rgba(245, 247, 250, 0.92);
+  }
+
+  .chapter-nav-panel {
+    width: 100%;
+    max-width: 720px;
+    max-height: calc(100dvh - 86px);
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .chapter-nav a {
+    min-height: 52px;
+    font-size: 14px;
+  }
+
+  h1 {
+    max-width: 12ch;
+    font-size: clamp(42px, 8vw, 68px);
+  }
+
+  h2 {
+    max-width: none;
+    font-size: clamp(30px, 5.8vw, 46px);
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  p,
+  .section-title-row p,
+  .hero-subtitle,
+  .story-copy p,
+  .budget-copy > p,
+  .ai-copy p,
+  .result-card p,
+  .project-card p,
+  .challenge-card p,
+  .recommendation-card p,
+  .value-item p {
+    font-size: 14px;
+  }
+
+  .hero-grid,
+  .story-layout,
+  .ai-layout,
+  .budget-layout,
+  .section-title-row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .toc-grid,
+  .kpi-grid,
+  .result-grid,
+  .project-showcase,
+  .value-chain,
+  .challenge-grid,
+  .recommendation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .toc-card,
+  .kpi-card,
+  .result-card,
+  .project-card,
+  .value-item,
+  .challenge-card,
+  .recommendation-card {
+    min-width: 0;
+    min-height: auto;
+  }
+
+  .chart-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card,
+  .chart-card.compact {
+    min-height: 300px;
+  }
+
+  #budgetBarChart,
+  #budgetDonutChart {
+    height: clamp(220px, 42vw, 280px);
+  }
+
+  .constellation {
+    min-height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .ai-core,
+  .ai-node {
+    position: static;
+    transform: none;
+    min-width: 0;
+  }
+
+  .ai-core {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: auto;
+    min-height: 120px;
+    border-radius: var(--radius);
+  }
+
+  .ai-node {
+    border-radius: var(--radius);
+  }
+
+  .roadmap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .roadmap-item {
+    min-height: auto;
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 14px;
+    padding: 0;
+  }
+
+  .roadmap-item::before {
+    display: none;
+  }
+
+  .roadmap-content {
+    margin-top: 2px;
+  }
+
+  .scroll-progress {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    width: auto;
+  }
+
+  .slide-indicator {
+    display: none;
+  }
+
+  .reveal,
+  .section.active .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 920px) {
+  .section {
+    padding-left: clamp(28px, 5vw, 44px);
+    padding-right: clamp(28px, 5vw, 44px);
+  }
+
+  .hero-grid,
+  .story-layout,
+  .ai-layout,
+  .budget-layout,
+  .section-title-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .toc-grid,
+  .kpi-grid,
+  .result-grid,
+  .project-showcase,
+  .value-chain,
+  .challenge-grid,
+  .recommendation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-panel {
+    display: block;
+  }
+
+  .chart-stack {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .section {
+    padding-top: 104px;
+    padding-bottom: 58px;
+  }
+
+  .project-showcase,
+  .result-grid,
+  .kpi-grid,
+  .toc-grid,
+  .value-chain,
+  .challenge-grid,
+  .recommendation-grid,
+  .roadmap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 699px) {
+  .section {
+    padding: 90px clamp(14px, 4vw, 20px) 44px;
+  }
+
+  .section:first-child {
+    padding-top: 104px;
+  }
+
+  .report-title {
+    display: none;
+  }
+
+  .site-header {
+    grid-template-columns: auto auto;
+  }
+
+  .hero-panel {
+    display: none;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .toc-grid,
+  .kpi-grid,
+  .result-grid,
+  .project-showcase,
+  .value-chain,
+  .challenge-grid,
+  .recommendation-grid,
+  .roadmap,
+  .constellation {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card,
+  .chart-card.compact {
+    min-height: 280px;
+    padding: 14px;
+  }
+
+  #budgetBarChart,
+  #budgetDonutChart {
+    height: 220px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 600px) {
+  h1 {
+    font-size: clamp(40px, 11vw, 58px);
+  }
+
+  h2 {
+    font-size: clamp(30px, 8vw, 40px);
+  }
+}
+
+@media (min-width: 381px) and (max-width: 480px) {
+  h1 {
+    font-size: clamp(38px, 12vw, 54px);
+  }
+
+  h2 {
+    font-size: clamp(28px, 8.6vw, 36px);
+  }
+
+  .kpi-value {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 380px) {
+  .site-header {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    min-height: 52px;
+    padding: 7px 8px 7px 11px;
+  }
+
+  .brand-mark {
+    font-size: 18px;
+  }
+
+  .section {
+    padding: 82px 12px 38px;
+  }
+
+  .section:first-child {
+    padding-top: 96px;
+  }
+
+  h1 {
+    font-size: clamp(34px, 12vw, 44px);
+  }
+
+  h2 {
+    font-size: clamp(28px, 9vw, 34px);
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  .toc-card,
+  .kpi-card,
+  .result-card,
+  .project-card,
+  .value-item,
+  .challenge-card,
+  .recommendation-card {
+    padding: 12px;
+  }
+
+  .chapter-nav {
+    padding: 70px 8px 8px;
+  }
+
+  .chapter-nav-panel {
+    padding: 14px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .presentation {
+    height: 100dvh;
+  }
+
+  .section {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -3271,7 +3728,7 @@ function closeNavigation() {
 }
 
 function isMobileReadingMode() {
-  return window.matchMedia("(max-width: 768px)").matches;
+  return window.matchMedia("(max-width: 1024px)").matches;
 }
 
 function goToSlide(index, immediate = false) {
