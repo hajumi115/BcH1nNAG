@@ -3060,6 +3060,297 @@ svg {
   }
 }
 
+/* ==========================================================================
+   Mobile / Tablet Slide Controls Override
+   ========================================================================== */
+
+.mobile-slide-controls {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .presentation {
+    width: max-content;
+    height: 100dvh;
+    min-height: 100dvh;
+    display: flex;
+    transform: translate3d(0, 0, 0);
+    transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .section {
+    width: 100vw;
+    min-width: 100vw;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    flex: 0 0 100vw;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding: calc(76px + env(safe-area-inset-top, 0px)) clamp(16px, 4vw, 30px) calc(106px + env(safe-area-inset-bottom, 0px));
+    opacity: 1;
+    transform: none;
+    scroll-padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .section:first-child {
+    padding-top: calc(92px + env(safe-area-inset-top, 0px));
+  }
+
+  .section-inner {
+    width: 100%;
+    max-width: 100%;
+    max-height: none;
+  }
+
+  .site-header {
+    top: calc(10px + env(safe-area-inset-top, 0px));
+    left: 10px;
+    right: 10px;
+    min-height: 54px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 10px;
+    padding: 8px 9px 8px 13px;
+    border-radius: 14px;
+  }
+
+  .brand-mark {
+    font-size: 20px;
+    white-space: nowrap;
+  }
+
+  .report-title {
+    display: block;
+    min-width: 0;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav-toggle {
+    flex: 0 0 auto;
+    min-width: 42px;
+    width: 42px;
+    height: 40px;
+    padding: 0;
+  }
+
+  .nav-toggle-text {
+    display: none;
+  }
+
+  .presentation-rail {
+    display: none;
+  }
+
+  .chapter-nav {
+    padding: calc(74px + env(safe-area-inset-top, 0px)) 10px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .chapter-nav-panel {
+    width: 100%;
+    max-width: 720px;
+    max-height: calc(100dvh - 90px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    overflow: auto;
+  }
+
+  .scroll-progress {
+    left: 14px;
+    right: 14px;
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    height: 4px;
+    z-index: 125;
+    pointer-events: none;
+  }
+
+  .slide-indicator {
+    display: none;
+  }
+
+  .mobile-slide-controls {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 130;
+    display: grid;
+    grid-template-columns: minmax(86px, 1fr) auto minmax(86px, 1fr);
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 16px 44px rgba(28, 28, 28, 0.14);
+    backdrop-filter: blur(18px);
+  }
+
+  .mobile-slide-controls button {
+    min-height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(245, 247, 250, 0.96);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .mobile-slide-controls button:active {
+    transform: scale(0.98);
+  }
+
+  .mobile-slide-controls button:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .mobile-page-count {
+    min-width: 72px;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .toc-grid,
+  .kpi-grid,
+  .result-grid,
+  .project-showcase,
+  .value-chain,
+  .challenge-grid,
+  .recommendation-grid,
+  .roadmap,
+  .constellation {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-grid,
+  .story-layout,
+  .ai-layout,
+  .budget-layout,
+  .section-title-row,
+  .chart-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card,
+  .chart-card.compact {
+    min-height: 280px;
+  }
+
+  #budgetBarChart,
+  #budgetDonutChart {
+    height: 220px;
+  }
+
+  .reveal,
+  .section.active .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 1024px) {
+  .section {
+    padding-left: clamp(28px, 5vw, 46px);
+    padding-right: clamp(28px, 5vw, 46px);
+  }
+
+  .hero-grid,
+  .story-layout,
+  .ai-layout,
+  .budget-layout,
+  .section-title-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .toc-grid,
+  .kpi-grid,
+  .result-grid,
+  .project-showcase,
+  .value-chain,
+  .challenge-grid,
+  .recommendation-grid,
+  .roadmap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-panel {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-title {
+    display: none;
+  }
+
+  .site-header {
+    grid-template-columns: auto auto;
+  }
+
+  .section {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .hero-panel {
+    display: none;
+  }
+
+  .mobile-slide-controls {
+    left: 8px;
+    right: 8px;
+    grid-template-columns: minmax(78px, 1fr) auto minmax(78px, 1fr);
+    gap: 6px;
+  }
+
+  .mobile-slide-controls button {
+    min-height: 42px;
+    font-size: 13px;
+  }
+
+  .mobile-page-count {
+    min-width: 62px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-mark {
+    font-size: 18px;
+  }
+
+  .section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .mobile-slide-controls {
+    grid-template-columns: minmax(72px, 1fr) auto minmax(72px, 1fr);
+  }
+}
+
   </style>
 </head>
 <body>
@@ -3559,6 +3850,7 @@ function initPresentation() {
   });
 
   createSlideIndicator();
+  createMobileControls();
   createPresentationRail();
   initNavigation();
   initKeyboard();
@@ -3579,6 +3871,20 @@ function createSlideIndicator() {
   indicator.id = "slide-indicator";
   indicator.setAttribute("aria-hidden", "true");
   document.body.appendChild(indicator);
+}
+
+function createMobileControls() {
+  const controls = document.createElement("div");
+  controls.className = "mobile-slide-controls";
+  controls.setAttribute("aria-label", "Điều hướng trang trình bày");
+  controls.innerHTML = `
+    <button class="mobile-prev" type="button" aria-label="Trang trước">‹ Trước</button>
+    <span class="mobile-page-count" id="mobile-page-count">01 / 01</span>
+    <button class="mobile-next" type="button" aria-label="Trang tiếp theo">Tiếp ›</button>
+  `;
+  document.body.appendChild(controls);
+  controls.querySelector(".mobile-prev").addEventListener("click", () => goToSlide(presentationState.current - 1));
+  controls.querySelector(".mobile-next").addEventListener("click", () => goToSlide(presentationState.current + 1));
 }
 
 function createPresentationRail() {
@@ -3640,7 +3946,6 @@ function initKeyboard() {
       return;
     }
     if (document.body.classList.contains("nav-open")) return;
-    if (isMobileReadingMode()) return;
     if (["ArrowRight", "PageDown", " "].includes(key)) {
       event.preventDefault();
       goToSlide(presentationState.current + 1);
@@ -3683,11 +3988,11 @@ function initTouch() {
 
   window.addEventListener("touchend", (event) => {
     if (document.body.classList.contains("nav-open")) return;
-    if (isMobileReadingMode()) return;
+    if (presentationState.isAnimating) return;
     const touch = event.changedTouches[0];
     const dx = touch.clientX - presentationState.touchStartX;
     const dy = touch.clientY - presentationState.touchStartY;
-    if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy)) return;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
     goToSlide(dx < 0 ? presentationState.current + 1 : presentationState.current - 1);
   }, { passive: true });
 }
@@ -3735,28 +4040,20 @@ function goToSlide(index, immediate = false) {
   const max = presentationState.slides.length - 1;
   const next = Math.max(0, Math.min(index, max));
   if (!immediate && next === presentationState.current) return;
+  if (!immediate && presentationState.isAnimating) return;
 
   presentationState.current = next;
   const presentation = document.getElementById("presentation");
   const activeSlide = presentationState.slides[next];
-
-  if (isMobileReadingMode()) {
-    presentation.style.transitionDuration = "0ms";
-    presentation.style.transform = "none";
-  } else {
-    presentation.style.transitionDuration = immediate ? "0ms" : "";
-    presentation.style.transform = `translate3d(${-next * 100}vw, 0, 0)`;
-  }
+  presentation.style.transitionDuration = immediate ? "0ms" : "";
+  presentation.style.transform = `translate3d(${-next * 100}vw, 0, 0)`;
 
   updateSlideState();
   updateProgress();
   updateActiveLinks();
 
   if (activeSlide?.id) history.replaceState(null, "", `#${activeSlide.id}`);
-
-  if (isMobileReadingMode() && activeSlide && !immediate) {
-    activeSlide.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  if (activeSlide) activeSlide.scrollTop = 0;
 
   presentationState.isAnimating = true;
   window.setTimeout(() => {
@@ -3802,10 +4099,16 @@ function revealSlide(slide) {
 function updateProgress() {
   const bar = document.getElementById("progress-bar");
   const indicator = document.getElementById("slide-indicator");
+  const mobileCount = document.getElementById("mobile-page-count");
+  const prev = document.querySelector(".mobile-prev");
+  const nextButton = document.querySelector(".mobile-next");
   const total = presentationState.slides.length;
   const current = presentationState.current + 1;
   bar.style.width = `${(current / total) * 100}%`;
   if (indicator) indicator.textContent = `${String(current).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+  if (mobileCount) mobileCount.textContent = `${String(current).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+  if (prev) prev.disabled = presentationState.current === 0;
+  if (nextButton) nextButton.disabled = presentationState.current === total - 1;
 }
 
 function updateActiveLinks() {
