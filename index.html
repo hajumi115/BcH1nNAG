@@ -5756,6 +5756,51 @@ body:has(#closing.closing-section.active) .presentation-capsule {
   display: none !important;
 }
 
+/* Mobile/tablet: true vertical page scroll instead of the desktop horizontal slide track.
+   Desktop keeps goToSlide()'s translateX logic (see isTouchPresentationMode() in the script below). */
+@media (max-width: 1024px) {
+  html,
+  body {
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  main.presentation,
+  .presentation {
+    width: 100%;
+    height: auto !important;
+    min-height: 100%;
+    overflow: visible !important;
+    display: block;
+    transform: none !important;
+  }
+
+  .presentation-track {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .presentation-track .section,
+  .section {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+    height: auto !important;
+    min-height: 100dvh;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -6009,7 +6054,9 @@ function renderMobile() { const grid = document.getElementById("mobile-feature-g
 function renderBi() { const diagram = document.getElementById("bi-diagram"); if (!diagram) return; diagram.innerHTML = `<div class="bi-core reveal"><strong>Naga BI</strong><span>Dữ liệu thống nhất cho điều hành và phân tích</span></div>${reportData.bi.map((item, index) => `<article class="bi-node reveal" style="--delay:${index * 55}ms"><span class="bi-icon">${item.icon}</span><strong>${item.title}</strong><span>${item.text}</span></article>`).join("")}`; }
 function renderDoneLimits() { const done = document.getElementById("done-list"); const limits = document.getElementById("limit-list"); if (done) done.innerHTML = reportData.done.map((text, index) => `<article class="done-card reveal" style="--delay:${index * 45}ms"><span class="status-icon">✓</span><p>${text}</p></article>`).join(""); if (limits) limits.innerHTML = reportData.limits.map((text, index) => `<article class="limit-card reveal" style="--delay:${index * 45}ms"><span class="status-icon">!</span><p>${text}</p></article>`).join(""); }
 
-function initPresentation() { const track = getPresentationTrack(); presentationState.slides = [...track.querySelectorAll(".section")]; presentationState.slideTitles = presentationState.slides.map(getSlideTitle); presentationState.slides.forEach((slide, index) => { slide.dataset.slide = String(index); slide.setAttribute("aria-label", `Slide ${index + 1}: ${presentationState.slideTitles[index]}`); }); createPresentationCapsule(); initNavigation(); initKeyboard(); initWheel(); initTouch(); initReveal(); const initialId = window.location.hash.replace("#", ""); const initialIndex = initialId ? findSlideIndex(initialId) : 0; goToSlide(initialIndex >= 0 ? initialIndex : 0, true); window.addEventListener("resize", () => goToSlide(presentationState.current, true)); }
+function initPresentation() { const track = getPresentationTrack(); presentationState.slides = [...track.querySelectorAll(".section")]; presentationState.slideTitles = presentationState.slides.map(getSlideTitle); presentationState.slides.forEach((slide, index) => { slide.dataset.slide = String(index); slide.setAttribute("aria-label", `Slide ${index + 1}: ${presentationState.slideTitles[index]}`); }); createPresentationCapsule(); initNavigation(); initKeyboard(); initWheel(); initTouch(); initReveal(); presentationState.wasMobile = isTouchPresentationMode(); if (presentationState.wasMobile) { enterMobilePresentation(); } else { const initialId = window.location.hash.replace("#", ""); const initialIndex = initialId ? findSlideIndex(initialId) : 0; goToSlide(initialIndex >= 0 ? initialIndex : 0, true); } window.addEventListener("resize", handlePresentationResize); }
+function enterMobilePresentation() { if (window.location.hash) history.replaceState(null, "", window.location.pathname); presentationState.current = 0; window.scrollTo(0, 0); goToSlide(0, true); }
+function handlePresentationResize() { const mobileNow = isTouchPresentationMode(); const wasMobile = presentationState.wasMobile; presentationState.wasMobile = mobileNow; if (mobileNow && !wasMobile) { enterMobilePresentation(); return; } if (!mobileNow) { goToSlide(presentationState.current, true); } }
 function getPresentationTrack() { return document.getElementById("presentation-track") || document.querySelector("main"); }
 function createPresentationCapsule() { const capsule = document.createElement("nav"); capsule.className = "presentation-capsule"; capsule.setAttribute("aria-label", "Điều hướng trình chiếu"); capsule.innerHTML = `<button class="capsule-button capsule-menu" type="button" aria-label="Mở mục lục">Mục lục</button><div class="capsule-buttons"><button class="capsule-button capsule-prev" type="button" aria-label="Slide trước">‹</button><button class="capsule-button capsule-next" type="button" aria-label="Slide tiếp theo">›</button></div><div class="capsule-title" id="capsule-title"></div><div class="capsule-dots">${presentationState.slides.map((slide, index) => `<button class="capsule-dot" type="button" data-slide="${index}" aria-label="Tới slide ${index + 1}: ${escapeHtml(presentationState.slideTitles[index])}"></button>`).join("")}</div><div class="capsule-count" id="capsule-count">1 / ${presentationState.slides.length}</div>`; document.body.appendChild(capsule); capsule.querySelector(".capsule-menu").addEventListener("click", toggleNavigation); capsule.querySelector(".capsule-prev").addEventListener("click", () => goToSlide(presentationState.current - 1)); capsule.querySelector(".capsule-next").addEventListener("click", () => goToSlide(presentationState.current + 1)); capsule.querySelectorAll(".capsule-dot").forEach((button) => button.addEventListener("click", () => goToSlide(Number(button.dataset.slide)))); }
 function initNavigation() { const toggle = document.getElementById("nav-toggle"); const nav = document.getElementById("chapter-nav"); const links = [...document.querySelectorAll('a[href^="#"]')]; if (toggle) toggle.addEventListener("click", toggleNavigation); if (nav) nav.addEventListener("click", (event) => { if (event.target === nav) closeNavigation(); }); links.forEach((link) => { link.addEventListener("click", (event) => { const targetId = link.getAttribute("href").replace("#", ""); const targetIndex = findSlideIndex(targetId); if (targetIndex < 0) return; event.preventDefault(); goToSlide(targetIndex); closeNavigation(); }); }); }
@@ -6022,7 +6069,7 @@ function findSlideIndex(id) { return presentationState.slides.findIndex((slide) 
 function getSlideTitle(slide) { const map = { opening: "Mở đầu", summary: "Tổng quan H1.2026", "results-1": "Kết quả H1 - Phần 1", "results-2": "Kết quả H1 - Phần 2", budget: "Ngân sách TTCN", "h2-direction": "Định hướng H2.2026", "erp-modules": "Module Naga ERP", "mobile-erp": "Naga ERP trên di động", "naga-bi": "Naga BI", "done-limits": "Làm được & hạn chế", closing: "Thank You" }; return map[slide.id] || slide.querySelector("h2, h1")?.textContent?.trim() || "Slide"; }
 function closeNavigation() { const toggle = document.getElementById("nav-toggle"); document.body.classList.remove("nav-open"); if (toggle) toggle.setAttribute("aria-expanded", "false"); }
 function isTouchPresentationMode() { return window.matchMedia("(max-width: 1024px)").matches; }
-function goToSlide(index, immediate = false) { const max = presentationState.slides.length - 1; const next = Math.max(0, Math.min(index, max)); if (!immediate && next === presentationState.current) return; if (!immediate && presentationState.isAnimating) return; presentationState.current = next; const track = getPresentationTrack(); const activeSlide = presentationState.slides[next]; track.style.transitionDuration = immediate ? "0ms" : ""; track.style.transform = `translate3d(${-next * 100}vw, 0, 0)`; updateSlideState(); updateProgress(); updateActiveLinks(); if (activeSlide?.id) history.replaceState(null, "", `#${activeSlide.id}`); if (activeSlide) activeSlide.scrollTop = 0; presentationState.isAnimating = true; window.setTimeout(() => { presentationState.isAnimating = false; track.style.transitionDuration = ""; }, immediate ? 0 : 760); }
+function goToSlide(index, immediate = false) { const max = presentationState.slides.length - 1; const next = Math.max(0, Math.min(index, max)); const mobile = isTouchPresentationMode(); if (!mobile) { if (!immediate && next === presentationState.current) return; if (!immediate && presentationState.isAnimating) return; } presentationState.current = next; const activeSlide = presentationState.slides[next]; if (mobile) { activeSlide?.scrollIntoView({ behavior: immediate ? "auto" : "smooth", block: "start" }); } else { const track = getPresentationTrack(); track.style.transitionDuration = immediate ? "0ms" : ""; track.style.transform = `translate3d(${-next * 100}vw, 0, 0)`; if (activeSlide) activeSlide.scrollTop = 0; presentationState.isAnimating = true; window.setTimeout(() => { presentationState.isAnimating = false; track.style.transitionDuration = ""; }, immediate ? 0 : 760); } updateSlideState(); updateProgress(); updateActiveLinks(); if (activeSlide?.id) history.replaceState(null, "", `#${activeSlide.id}`); }
 function updateSlideState() { presentationState.slides.forEach((slide, index) => { const isActive = index === presentationState.current; slide.classList.toggle("active", isActive); slide.setAttribute("aria-hidden", String(!isActive)); if (isActive) revealSlide(slide); }); }
 function revealSlide(slide) { slide.querySelectorAll(".reveal").forEach((item) => item.classList.add("is-visible")); }
 function updateProgress() { const bar = document.getElementById("progress-bar"); const title = document.getElementById("capsule-title"); const count = document.getElementById("capsule-count"); const prev = document.querySelector(".capsule-prev"); const nextButton = document.querySelector(".capsule-next"); const total = presentationState.slides.length; const current = presentationState.current + 1; if (bar) bar.style.width = `${(current / total) * 100}%`; if (title) title.textContent = presentationState.slideTitles[presentationState.current]; if (count) count.textContent = `${current} / ${total}`; if (prev) prev.disabled = presentationState.current === 0; if (nextButton) nextButton.disabled = presentationState.current === total - 1; }
